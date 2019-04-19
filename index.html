@@ -23,8 +23,8 @@
 </head>
 
 <body>
-    <div class="lds-ring center display-none"><div></div><div></div><div></div><div></div></div>
-    <main>
+    <div id="loader" class="lds-ring center"><div></div><div></div><div></div><div></div></div>
+    <main hidden>
       <button id="menu-open" class="ripple">
           <img class="icon-sm-28" src="./assets/images/icons/menu.png" alt="">
       </button>
@@ -79,7 +79,7 @@
         </div>
         
         <!-- Hourly Weather -->
-        <div id="hourly-weather-wrapper" class="bottom-panel-body">
+        <div id="hourly-weather-wrapper" class="bottom-panel-body" visible="false">
                 <div class="flex-container weather-container">
                     <div>
                         <h1>14:00</h1>
