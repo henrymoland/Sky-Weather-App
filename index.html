@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="theme-color" content="#000">
+    <meta name="msapplication-navbutton-color" content="#000">
+    <meta name="apple-mobile-web-app-status-bar" content="#000">
+    <meta name="description" content="Weather Application">
+    <meta name="keyword" content="Weather Application, Weather, Forecast">
+    <meta name="author" content="Henry Moland III">
+
+    <link rel="stylesheet" href="./style/index.css">
+    <link rel="apple-touch-icon" sizes="76x76" href="./assets/images/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/icons/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet">
+    <title>Sky - Weather App</title>
+</head>
+
+<body>
+    <div class="lds-ring center display-none"><div></div><div></div><div></div><div></div></div>
+    <main>
+      <button id="menu-open" class="ripple">
+          <img class="icon-sm-28" src="./assets/images/icons/menu.png" alt="">
+      </button>
+
+      <!-- current weather section -->
+      <section id="current-weather-container">
+          <h1 class="location-label">Stockton</h1>
+
+          <div class="flex-container" id="temp-summary-container">
+              <div>
+                    <img src="./assets/images/summary-icons/sunny.png" alt="">
+              </div>
+              <div>
+                    <h1 id="degrees-label">70&#176</h1>
+                    <p id="summary-label">Clear Day</p>
+              </div>
+          </div>
+
+          <div class="flex-container" id="wind-hummity-container">
+              <div>
+                    <img class="icon-sm-30" src="./assets/images/icons/humidity.png" alt="">
+                    <span>20%</span>
+              </div>
+              <div>
+                    <img class="icon-sm-30" src="./assets/images/icons/wind-speed-flag.png" alt="">
+                    <span>3 m/h</span>
+              </div>
+          </div>
+      </section>
+
+      <!-- current weather section -->
+      <section class="bottom-panel">
+        <button id="toggle-weather" class="ripple center_x">
+            <img src="./assets/images/icons/up-arrow.png" alt="">
+        </button>
+
+        <!-- Daily Weather -->
+        <div id="daily-weather-wrapper" class="bottom-panel-body">
+            <div class="flex-container weather-container">
+                <div>
+                    <h1 class="weather-container-text">Sunday</h1>
+                </div>
+                <div class="flex-container">
+                    <div>
+                        <p class="weather-container-text">80&#176;</p>
+                    </div>
+                    <div>
+                        <img class= "icon-sm-30" src="./assets/images/summary-icons/sunny.png">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Hourly Weather -->
+        <div id="hourly-weather-wrapper" class="bottom-panel-body">
+                <div class="flex-container weather-container">
+                    <div>
+                        <h1>14:00</h1>
+                    </div>
+                    <div>
+                        <h1>Sunday</h1>
+                    </div>
+                    <div class="flex-container">
+                        <div>
+                            <p>80&#176;</p>
+                        </div>
+                        <div>
+                            <img class= "icon-sm-30" src="./assets/images/summary-icons/clear-day-white.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <!-- Menu -->
+        <section id="menu-container">
+            <button id="menu-button-close" class="ripple">
+                <i class="fas fa-times"></i>
+            </button>
+            <div>
+                <div id="location-wrapper">
+                    <input type="text" placeholder="Location" id="location-input">
+                    <br>
+                    <button class="ripple disabled " id="add-city-button" disabled>Add City</button>
+                    <h1 class="location-label">Stockton</h1> 
+                </div>
+
+                <div id="saved-cities-wrapper">
+                    <div class="flex-container saved-city-box">
+                        <div class="ripple">
+                            <h1>Stockton</h1>
+                        </div>
+                        <div>
+                            <button class="ripple remove-city-button">
+                                <i class="fas fa-minus-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+
+        </section>
+      </section>
+    </main>
+    <script src="./scripts/index.js"></script>
+</body>
+</html>
