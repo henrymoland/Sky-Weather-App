@@ -48,6 +48,35 @@ const UI = (function () {
 
 })();
 
+const getLocation = (function () {
+    let location;
+
+    const locationInput = document.querySelector('#location-input');
+    const addCityButton = document.querySelector('#add-city-button');
+
+    const addCity = () => {
+        location = locationInput.value;
+        locationInput.value = '';
+        addCityButton.setAttribute('disabled', true);
+        addCityButton.classList.add('disabled');
+        console.log('Get weather data for', location);
+    }
+
+    addCityButton.addEventListener('click', addCity);
+    
+    locationInput.addEventListener('input', function () {
+        let inputText = this.value.trim();
+
+        if(inputText !== '') {
+            addCityButton.removeAttribute('disabled');
+            addCityButton.classList.remove('disabled');
+        } else {
+            addCityButton.setAttribute('disabled', true);
+            addCityButton.classList.add('disabled');
+        }
+    })
+})();
+
 /* ----- UI Initialization ----- */
 
 window.onload = function () {
