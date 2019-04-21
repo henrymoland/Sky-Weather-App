@@ -48,35 +48,48 @@ const UI = (function () {
 
 })();
 
-const getLocation = (function () {
-    let location;
+    // Get weather locaiton
+    const getLocation = (function () {
+        let location;
 
-    const locationInput = document.querySelector('#location-input');
-    const addCityButton = document.querySelector('#add-city-button');
+        const locationInput = document.querySelector('#location-input');
+        const addCityButton = document.querySelector('#add-city-button');
 
-    const addCity = () => {
-        location = locationInput.value;
-        locationInput.value = '';
-        addCityButton.setAttribute('disabled', true);
-        addCityButton.classList.add('disabled');
-        console.log('Get weather data for', location);
-    }
-
-    addCityButton.addEventListener('click', addCity);
-    
-    locationInput.addEventListener('input', function () {
-        let inputText = this.value.trim();
-
-        if(inputText !== '') {
-            addCityButton.removeAttribute('disabled');
-            addCityButton.classList.remove('disabled');
-        } else {
+        const addCity = () => {
+            location = locationInput.value;
+            locationInput.value = '';
             addCityButton.setAttribute('disabled', true);
             addCityButton.classList.add('disabled');
+            console.log('Get weather data for', location);
         }
-    })
+
+        addCityButton.addEventListener('click', addCity);
+        
+        locationInput.addEventListener('input', function () {
+            let inputText = this.value.trim();
+
+            if(inputText !== '') {
+                addCityButton.removeAttribute('disabled');
+                addCityButton.classList.remove('disabled');
+            } else {
+                addCityButton.setAttribute('disabled', true);
+                addCityButton.classList.add('disabled');
+            }
+        })
 })();
 
+const WEATHER = (function () {
+    const darkSkyKey = '55917ecfc1b2dcf2f054fafcfe0a95cf';
+    const geoLocationKey = '89501d843167401e8ca77422ead8fe2f'; // OpenCageData API
+    // Connect to DarkSky and OpenCage API
+    const getgeoLocationURL = (location) => {
+        `https://api.opencagedata.com/geocode/v1/json?q=${location}&key=${geoLocationKey}`
+    };
+    const getgeoLocationURL = (lat,long) => {
+        `https://api.darksky.net/forecast/${darkSkyKey}/${lat},${long}`
+    };
+
+})();
 /* ----- UI Initialization ----- */
 
 window.onload = function () {
