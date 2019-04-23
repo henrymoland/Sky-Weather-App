@@ -39,11 +39,17 @@ const UI = (function () {
         } else console.error('Error rendering the state of the hourly weather panel');
     };
 
+    const pullWeatherData = (data, location) => {
+        console.log(data);
+        console.log(location);
+    };
+
     document.querySelector('#toggle-weather').addEventListener('click', toggleHourlyWeather)
     
     return {
         showApp,
-        loadApp
+        loadApp,
+        pullWeatherData
     }
 
 })();
@@ -60,7 +66,7 @@ const UI = (function () {
             locationInput.value = '';
             addCityButton.setAttribute('disabled', true);
             addCityButton.classList.add('disabled');
-            console.log('Get weather data for', location);
+            WEATHER.getWeather(location);
         }
 
         addCityButton.addEventListener('click', addCity);
@@ -82,12 +88,41 @@ const WEATHER = (function () {
     const darkSkyKey = '55917ecfc1b2dcf2f054fafcfe0a95cf';
     const geoLocationKey = '89501d843167401e8ca77422ead8fe2f'; // OpenCageData API
     // Connect to DarkSky and OpenCage API
-    const getgeoLocationURL = (location) => {
-        `https://api.opencagedata.com/geocode/v1/json?q=${location}&key=${geoLocationKey}`
+    const getgeoLocationURL = (location) => 
+        `https://api.opencagedata.com/geocode/v1/json?q=${location}&key=${geoLocationKey}`;
+    const darkSkyURL = (lat, long) => 
+        `https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/${darkSkyKey}/${lat},${long}`;
+
+        const getDarkSkyURL = (url, location) => {
+            axios.get(url)
+            .then( (res) => {
+                console.log(res);
+                UI.pullWeatherData(res.data, location)
+            })
+            .catch( (err) => {
+                console.err(err)
+            })
+        }
+    const getWeather = (location) => {
+        UI.loadApp();
+        let getLocationURL = getgeoLocationURL(location);
+
+        axios.get(getLocationURL)
+        .then((res) => {
+            let lat = res.data.results[0].geometry.lat;
+            let long = res.data.results[0].geometry.lng;
+
+            let darkSkyData = darkSkyURL(lat, long);
+            getDarkSkyURL(darkSkyData, location);
+        })
+        .catch((err) => {
+            console.log(err)
+        })
     };
-    const getgeoLocationURL = (lat,long) => {
-        `https://api.darksky.net/forecast/${darkSkyKey}/${lat},${long}`
-    };
+
+    return {
+        getWeather
+    }
 
 })();
 /* ----- UI Initialization ----- */
