@@ -42,6 +42,21 @@ const UI = (function () {
     const pullWeatherData = (data, location) => {
         console.log(data);
         console.log(location);
+
+        let currentlyData = data.currently;
+
+        // Set current weather
+        // Set current location
+        document.querySelectorAll('.location-label').forEach((element) => {
+            element.innerHTML = location;
+        });
+
+        // Set background
+        document.querySelector('main').style.backgroundImage = `url('./assets/images/bg-images/${currentlyData.icon}.jpg')`;
+         // Set summary
+        document.querySelector('#currently-icon').setAttribute('src', `./assets/images/summary-icons/${currentlyData.icon}-white.png`);
+
+        UI.showApp();
     };
 
     document.querySelector('#toggle-weather').addEventListener('click', toggleHourlyWeather)
