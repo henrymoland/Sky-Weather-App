@@ -16,9 +16,6 @@ const UI = (function () {
     const showMenu = () => menu.style.right = 0;
     const hideMenu = () => menu.style.right = '-65%';
 
-    document.querySelector('#menu-open').addEventListener('click', showMenu);
-    document.querySelector('#menu-button-close').addEventListener('click', hideMenu);
-
     // Toggle hourly weather
     const toggleHourlyWeather = () => {
         let hourlyWeather = document.querySelector('#hourly-weather-wrapper');
@@ -44,6 +41,14 @@ const UI = (function () {
         console.log(location);
 
         let currentlyData = data.currently;
+        let dailyData = data.daily.data;
+        let hourlyData = data.hourly.data;
+        let weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        let dailyWeatherWrapper = document.querySelector('#daily-weather-wrapper');
+        let dailyWeatherModel;
+        let day;
+        let maxMinTemp;
+        let dailyIcon;
 
         // Set current weather
         // Set current location
@@ -53,19 +58,50 @@ const UI = (function () {
 
         // Set background
         document.querySelector('main').style.backgroundImage = `url('./assets/images/bg-images/${currentlyData.icon}.jpg')`;
+
          // Set summary
         document.querySelector('#currently-icon').setAttribute('src', `./assets/images/summary-icons/${currentlyData.icon}-white.png`);
         document.querySelector('#summary-label').innerHTML = currentlyData.summary;
 
         document.querySelector('#degrees-label').innerHTML = Math.round(currentlyData.temperature) + '&#176';
-        //Set Humidity
+        // Set Humidity
         document.querySelector('#humidity-label').innerHTML = Math.round(currentlyData.humidity * 100) + '%';
 
-        //Set Wind Spped
+        // Set Wind Spped
         document.querySelector('#wind-speed-label').innerHTML = currentlyData.windSpeed.toFixed(1) + 'm/h';
 
+        // Set daily weather
+        while(dailyWeatherWrapper.children[1]) {
+            dailyWeatherWrapper.removeChild(dailyWeatherWrapper.children[1])
+        }
+
+        // Loop through and show daily weather forecast
+        for(let i = 0; i <= 6; i++) {
+            dailyWeatherModel = dailyWeatherWrapper.children[0].cloneNode(true); 
+            dailyWeatherModel.classList.remove('display-none');
+            // Set day 
+            day = weekDays[new Date(dailyData[i].time * 1000).getDay()]
+            dailyWeatherModel.children[0].children[0].innerHTML = day;
+            // Get Min and Max temps
+            maxMinTemp = Math.round((dailyData[i].temperatureMax)) + '&#176' + Math.round((dailyData[i].temperatureMin)) + '&#176';
+            dailyWeatherModel.children[1].children[0].innerHTML = maxMinTemp;
+            // Get daily icons
+            dailyIcon = dailyData[i].icon;
+            dailyWeatherModel.children[1].children[1].children[0].setAttribute('src',`./assets/images/summary-icons/${dailyIcon}-white.png`);
+            // Append the model
+            dailyWeatherWrapper.appendChild(dailyWeatherModel);
+        }
+
+        dailyWeatherWrapper.children[1].classList.add('current-day-of-the-week');
         UI.showApp();
     };
+
+    // Menu Events
+    document.querySelector('#menu-open').addEventListener('click', showMenu);
+    document.querySelector('#menu-button-close').addEventListener('click', hideMenu);
+
+    // Toggle hourly weather event
+    document.querySelector('#toggle-weather').addEventListener('click', toggleHourlyWeather);
 
     return {
         showApp,
