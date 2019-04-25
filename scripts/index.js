@@ -55,12 +55,18 @@ const UI = (function () {
         document.querySelector('main').style.backgroundImage = `url('./assets/images/bg-images/${currentlyData.icon}.jpg')`;
          // Set summary
         document.querySelector('#currently-icon').setAttribute('src', `./assets/images/summary-icons/${currentlyData.icon}-white.png`);
+        document.querySelector('#summary-label').innerHTML = currentlyData.summary;
+
+        document.querySelector('#degrees-label').innerHTML = Math.round(currentlyData.temperature) + '&#176';
+        //Set Humidity
+        document.querySelector('#humidity-label').innerHTML = Math.round(currentlyData.humidity * 100) + '%';
+
+        //Set Wind Spped
+        document.querySelector('#wind-speed-label').innerHTML = currentlyData.windSpeed.toFixed(1) + 'm/h';
 
         UI.showApp();
     };
 
-    document.querySelector('#toggle-weather').addEventListener('click', toggleHourlyWeather)
-    
     return {
         showApp,
         loadApp,

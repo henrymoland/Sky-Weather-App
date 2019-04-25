@@ -35,7 +35,7 @@
 
           <div class="flex-container" id="temp-summary-container">
               <div>
-                    <img src="./assets/images/summary-icons/sunny.png" alt="">
+                    <img src="./assets/images/summary-icons/sunny.png" alt="" id="currently-icon">
               </div>
               <div>
                     <h1 id="degrees-label">70&#176</h1>
@@ -46,11 +46,11 @@
           <div class="flex-container" id="wind-hummity-container">
               <div>
                     <img class="icon-sm-30" src="./assets/images/icons/humidity.png" alt="">
-                    <span>20%</span>
+                    <span id="humidity-label">20%</span>
               </div>
               <div>
                     <img class="icon-sm-30" src="./assets/images/icons/wind-speed-flag.png" alt="">
-                    <span>3 m/h</span>
+                    <span id="wind-speed-label">3 m/h</span>
               </div>
           </div>
       </section>
@@ -63,7 +63,7 @@
 
         <!-- Daily Weather -->
         <div id="daily-weather-wrapper" class="bottom-panel-body">
-            <div class="flex-container weather-container">
+            <div class="flex-container weather-container display-none">
                 <div>
                     <h1 class="weather-container-text">Sunday</h1>
                 </div>
