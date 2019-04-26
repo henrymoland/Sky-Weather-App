@@ -49,6 +49,9 @@ const UI = (function () {
         let day;
         let maxMinTemp;
         let dailyIcon;
+        let hourlyWeatherWrapper = document.querySelector('#hourly-weather-wrapper');
+        let hourlyWeatherModel;
+        let hourlyIcon;
 
         // Set current weather
         // Set current location
@@ -75,6 +78,12 @@ const UI = (function () {
             dailyWeatherWrapper.removeChild(dailyWeatherWrapper.children[1])
         }
 
+        while(hourlyWeatherWrapper.children[1]) {
+            hourlyWeatherWrapper.removeChild(hourlyWeatherWrapper.children[1])
+        }
+
+        
+
         // Loop through and show daily weather forecast
         for(let i = 0; i <= 6; i++) {
             dailyWeatherModel = dailyWeatherWrapper.children[0].cloneNode(true); 
@@ -83,7 +92,7 @@ const UI = (function () {
             day = weekDays[new Date(dailyData[i].time * 1000).getDay()]
             dailyWeatherModel.children[0].children[0].innerHTML = day;
             // Get Min and Max temps
-            maxMinTemp = Math.round((dailyData[i].temperatureMax)) + '&#176' + Math.round((dailyData[i].temperatureMin)) + '&#176';
+            maxMinTemp = Math.round(dailyData[i].temperatureMax) + '&#176;' + "/" + Math.round(dailyData[i].temperatureMin) + '&#176;'
             dailyWeatherModel.children[1].children[0].innerHTML = maxMinTemp;
             // Get daily icons
             dailyIcon = dailyData[i].icon;
