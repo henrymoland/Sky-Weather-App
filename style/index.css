@@ -293,7 +293,7 @@ button {
 
 .weather-container {
 	position: relative;
-	margin-bottom: 15px;
+	margin-bottom: 10px;
 }
 
 .weather-container > div:last-child {
@@ -319,7 +319,7 @@ button {
 }
 
 .weather-container-text {
-	color: #353535;
+	color: white;
 }
 
 /* ================================ Hourly Weather Panel ================================ */

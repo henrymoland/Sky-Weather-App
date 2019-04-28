@@ -46,11 +46,11 @@
           <div class="flex-container" id="wind-hummity-container">
               <div>
                     <img class="icon-sm-30" src="./assets/images/icons/humidity.png" alt="">
-                    <span id="humidity-label">20%</span>
+                    <span id="humidity-label"></span>
               </div>
               <div>
                     <img class="icon-sm-30" src="./assets/images/icons/wind-speed-flag.png" alt="">
-                    <span id="wind-speed-label">3 m/h</span>
+                    <span id="wind-speed-label"></span>
               </div>
           </div>
       </section>
@@ -65,11 +65,11 @@
         <div id="daily-weather-wrapper" class="bottom-panel-body">
             <div class="flex-container weather-container display-none">
                 <div>
-                    <h1 class="weather-container-text">Sunday</h1>
+                    <h1 class="weather-container-text"></h1>
                 </div>
                 <div class="flex-container">
                     <div>
-                        <p class="weather-container-text">80&#176;</p>
+                        <p class="weather-container-text"></p>
                     </div>
                     <div>
                         <img class= "icon-sm-30" src="./assets/images/summary-icons/sunny.png">
@@ -82,14 +82,14 @@
         <div id="hourly-weather-wrapper" class="bottom-panel-body" visible="false">
                 <div class="flex-container weather-container display-none">
                     <div>
-                        <h1>14:00</h1>
+                        <h1></h1>
                     </div>
                     <div>
-                        <h1>Sunday</h1>
+                        <h1></h1>
                     </div>
                     <div class="flex-container">
                         <div>
-                            <p>80&#176;</p>
+                            <p></p>
                         </div>
                         <div>
                             <img class= "icon-sm-30" src="./assets/images/summary-icons/clear-day-white.png">
@@ -108,13 +108,14 @@
                     <input type="text" placeholder="Location" id="location-input">
                     <br>
                     <button class="ripple disabled " id="add-city-button" disabled>Add City</button>
-                    <h1 class="location-label">Stockton</h1> 
+                    <h1 class="location-label"></h1> 
                 </div>
 
                 <div id="saved-cities-wrapper">
+                    <!---
                     <div class="flex-container saved-city-box">
-                        <div class="ripple">
-                            <h1>Stockton</h1>
+                        <div class="ripple set-city">
+                            <h1 class="set-city"></h1>
                         </div>
                         <div>
                             <button class="ripple remove-city-button">
@@ -122,6 +123,7 @@
                             </button>
                         </div>
                     </div>
+                -->
                 </div>  
             </div>
 

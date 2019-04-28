@@ -78,12 +78,6 @@ const UI = (function () {
             dailyWeatherWrapper.removeChild(dailyWeatherWrapper.children[1])
         }
 
-        while(hourlyWeatherWrapper.children[1]) {
-            hourlyWeatherWrapper.removeChild(hourlyWeatherWrapper.children[1])
-        }
-
-        
-
         // Loop through and show daily weather forecast
         for(let i = 0; i <= 6; i++) {
             dailyWeatherModel = dailyWeatherWrapper.children[0].cloneNode(true); 
@@ -102,6 +96,28 @@ const UI = (function () {
         }
 
         dailyWeatherWrapper.children[1].classList.add('current-day-of-the-week');
+
+        // Set hourly weather
+        // ==================
+        while(hourlyWeatherWrapper.children[1]) {
+            hourlyWeatherWrapper.removeChild(hourlyWeatherWrapper.children[1])
+        }
+
+        for (let i = 0; i <= 24; i++) {
+            hourlyWeatherModel = hourlyWeatherWrapper.children[0].cloneNode(true);
+            hourlyWeatherModel.classList.remove('display-none');
+            // Set hours
+            hourlyWeatherModel.children[0].children[0].innerHTML = new Date( hourlyData[i].time * 1000).getHours() + ':00';
+            // Set temperature
+            hourlyWeatherModel.children[1].children[0].innerHTML = Math.round( hourlyData[i].temperature ) + '&#176;';
+            // Set icon
+            //hourlyIcon = hourlyData[i].icon;
+            //hourlyyWeatherModel.children[1].children[1].children[0].setAttribute('src',`./assets/images/summary-icons/${hourlyIcon}-grey.png`);
+
+            // Append model
+            hourlyWeatherWrapper.appendChild(hourlyWeatherModel);
+        }
+
         UI.showApp();
     };
 
@@ -117,8 +133,90 @@ const UI = (function () {
         loadApp,
         pullWeatherData
     }
-
 })();
+
+    // Local storage API
+    const LOCALSTORAGE = (function () {
+        let savedCities = [];
+
+        const save = (city) => {
+            savedCities.push(city);
+            localStorage.setItem('savedCities', JSON.stringify(savedCities));
+        }
+
+        const get = () => {
+            if(localStorage.getItem('savedCities') != null)
+                savedCities = JSON.parse(localStorage.getItem('savedCities'));
+        }
+
+        const remove = (index) => {
+            if(index < savedCities.length) {
+                savedCities.splice(index, 1);
+                localStorage.setItem('savedCities', JSON.stringify(savedCities));
+            }
+        }
+
+        const getSavedCities = () => savedCities;
+
+        return {
+            save,
+            get,
+            remove,
+            getSavedCities
+        }
+    })();
+
+    const SAVEDCITIES = (function(){
+        let container = document.querySelector('#saved-cities-wrapper');
+        const drawCity = (city) => {
+            let cityBox = document.createElement('div');
+            let cityWrapper = document.createElement('div');
+            let deleteWrapper = document.createElement('div');
+            let cityTextNode = document.createElement('h1');
+            let deleteButton = document.createElement('button');
+            cityBox.classList.add('saved-city-box', 'flex-container');
+            cityTextNode.innerHTML = city;
+            cityTextNode.classList.add('set-city');
+            cityWrapper.classList.add('ripple','set-city');
+            cityWrapper.append(cityTextNode);
+            cityBox.append(cityWrapper);
+
+            deleteButton.classList.add('ripple', 'remove-saved-city');
+            deleteButton.innerHTML = 'X';
+            deleteWrapper.append(deleteButton);
+            cityBox.append(deleteWrapper);
+            container.append(cityBox);
+        };
+
+        const deleteCity = (cityHTMLButton) => {
+            let nodes = Array.prototype.slice.call(container.children)
+            let cityWrapper = cityHTMLButton.closest('.saved-city-box');
+            let cityIndex = nodes.indexOf(cityWrapper);
+            LOCALSTORAGE.remove(cityIndex);
+            cityWrapper.remove();
+        }
+
+        document.addEventListener('click', function(event) {
+            if(event.target.classList.contains('remove-saved-city')){
+                deleteCity(event.target);
+            }
+        });
+
+        document.addEventListener('click', function(event) {
+            if(event.target.classList.contains('set-city')){
+                let nodes = Array.prototype.slice.call(container.children);
+                let cityWrapper = event.target.closest('.saved-city-box');
+                let cityIndex = nodes.indexOf(cityWrapper);
+                savedCities = LOCALSTORAGE.getSavedCities();
+
+                WEATHER.getWeather(savedCities[cityIndex], false);
+            }
+        });
+
+        return {
+            drawCity
+        }
+    })();
 
     // Get weather locaiton
     const getLocation = (function () {
@@ -132,7 +230,7 @@ const UI = (function () {
             locationInput.value = '';
             addCityButton.setAttribute('disabled', true);
             addCityButton.classList.add('disabled');
-            WEATHER.getWeather(location);
+            WEATHER.getWeather(location, true);
         }
 
         addCityButton.addEventListener('click', addCity);
@@ -169,12 +267,23 @@ const WEATHER = (function () {
                 console.err(err)
             })
         }
-    const getWeather = (location) => {
+    const getWeather = (location, save) => {
         UI.loadApp();
         let getLocationURL = getgeoLocationURL(location);
 
         axios.get(getLocationURL)
         .then((res) => {
+            if(res.data.results.length == 0){
+                console.error("Invalid location");
+                UI.showApp();
+                return;
+            }
+
+            if(save) {
+                LOCALSTORAGE.save(location);
+                SAVEDCITIES.drawCity(location);
+            }
+
             let lat = res.data.results[0].geometry.lat;
             let long = res.data.results[0].geometry.lng;
 
@@ -194,5 +303,12 @@ const WEATHER = (function () {
 /* ----- UI Initialization ----- */
 
 window.onload = function () {
-    UI.showApp();
+    LOCALSTORAGE.get();
+    let cities = LOCALSTORAGE.getSavedCities();
+    if (cities.length !=0){
+        cities.forEach( (city) => SAVEDCITIES.drawCity(city));
+        WEATHER.getWeather(cities[cities.length -1], false)
+    }
+    else UI.showApp();
+   
 }
